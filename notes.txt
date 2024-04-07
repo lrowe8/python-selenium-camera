@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+
+<html style="cursor: none;">
+<head>
+    <script type="text/javascript">
+        if (!navigator.mediaDevices?.enumerateDevices) {
+            console.log("enumerateDevices() not supported.");
+        } else {
+            // List cameras and microphones.
+            navigator.mediaDevices.getUserMedia({ video: true });
+            navigator.mediaDevices
+                .enumerateDevices()
+                .then((devices) => {
+                    let filteredDevices = devices.filter((device => device.kind === "videoinput"));
+
+                    filteredDevices.forEach((device) => {
+                        console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+                });
+            })
+            .catch((err) => {
+                console.error(`${err.name}: ${err.message}`);
+            });
+        }
+    </script>
+</head>
+<body style="background: black; display:flex; margin:0px;">
+    <video id="myVidPlayer" controls muted autoplay></video>
+
+    <script>
+        //Selector for your <video> element
+            const video = document.querySelector('#myVidPlayer');
+        console.log(video);
+
+        //Core
+        window.navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                console.log(stream);
+                video.srcObject = stream;
+                video.onloadedmetadata = (e) => {
+                    video.play();
+                };
+            })
+            .catch( () => {
+                alert('You have give browser the permission to run Webcam and mic ;( ');
+            });
+    </script>
+</body>
+</html>
+            

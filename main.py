@@ -12,7 +12,7 @@ def video_devices_webpage(path: Path) -> None:
 
             <html style="cursor: none;">
             <head>
-                <script>
+                <script type="text/javascript">
                     if (!navigator.mediaDevices?.enumerateDevices) {
                         console.log("enumerateDevices() not supported.");
                     } else {
