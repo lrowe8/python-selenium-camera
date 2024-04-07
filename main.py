@@ -8,6 +8,7 @@ def video_devices_webpage(path: Path) -> None:
     with open(path, 'w') as f:
         f.write(
 '''
+
 .elementContainer {
     align-items: center;
     display: flex;
@@ -35,12 +36,31 @@ def video_devices_webpage(path: Path) -> None:
                         let filteredDevices = devices.filter((device => device.kind === "videoinput"));
 
                         filteredDevices.forEach((device) => {
-                            cameraOptions.options[cameraOptions.options.length] = new Option(device.label.split('(')[0], device.label);
+                            cameraOptions.options[cameraOptions.options.length] = new Option(device.label.split('(')[0], device.deviceId);
                     });
                 })
                 .catch((err) => {
                     console.error(`${err.name}: ${err.message}`);
                 });
+            }
+
+            function startStreaming(source) {
+                //Selector for your <video> element
+                const video = document.querySelector('#myVidPlayer');
+                console.log(source);
+
+                //Core
+                window.navigator.mediaDevices.getUserMedia({ video: {deviceId: source} })
+                    .then(stream => {
+                        console.log(stream);
+                        video.srcObject = stream;
+                        video.onloadedmetadata = (e) => {
+                            video.play();
+                        };
+                    })
+                    .catch( () => {
+                        alert('You have give browser the permission to run Webcam and mic ;( ');
+                    });
             }
         </script>
     </head>
@@ -51,12 +71,15 @@ def video_devices_webpage(path: Path) -> None:
                 <video id="myVidPlayer" controls muted autoplay></video>
             </div>
             <div class="myDiv">
-                <select name = "options" id="cameraOptions"></select>
+                <select name="options" id="cameraOptions" onchange="startStreaming(this.value)">
+                    <option value="">Make a selection</option>
+                </select>
             </div>
         </div>
     </body>
 
 </html>
+
 '''
         )
 
