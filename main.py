@@ -8,15 +8,12 @@ def video_devices_webpage(path: Path) -> None:
     with open(path, 'w') as f:
         f.write(
 '''
-
 .elementContainer {
-    align-items: center;
     display: flex;
-    justify-content: center;
 }
 
 .myDiv {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 <!DOCTYPE html>
@@ -68,7 +65,7 @@ def video_devices_webpage(path: Path) -> None:
     <body style="background: black; display:flex; margin:0px;">
         <div class="elementContainer">
             <div class="myDiv">
-                <video id="myVidPlayer" controls muted autoplay></video>
+                <video id="myVidPlayer" width="100%" height="75%" controls muted autoplay></video>
             </div>
             <div class="myDiv">
                 <select name="options" id="cameraOptions" onchange="startStreaming(this.value)">
@@ -79,6 +76,7 @@ def video_devices_webpage(path: Path) -> None:
     </body>
 
 </html>
+
 
 '''
         )
