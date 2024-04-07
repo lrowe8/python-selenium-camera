@@ -7,36 +7,55 @@ from selenium.webdriver.chrome.service import Service
 def video_devices_webpage(path: Path) -> None:
     with open(path, 'w') as f:
         f.write(
-            '''
-            <!DOCTYPE html>
+'''
+.elementContainer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
 
-            <html style="cursor: none;">
-            <head>
-                <script type="text/javascript">
-                    if (!navigator.mediaDevices?.enumerateDevices) {
-                        console.log("enumerateDevices() not supported.");
-                    } else {
-                        // List cameras and microphones.
-                        navigator.mediaDevices.getUserMedia({ video: true });
-                        navigator.mediaDevices
-                            .enumerateDevices()
-                            .then((devices) => {
-                                let filteredDevices = devices.filter((device => device.kind === "videoinput"));
+.myDiv {
+    margin-bottom: 20px;
+}
+<!DOCTYPE html>
 
-                                filteredDevices.forEach((device) => {
-                                    console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
-                            });
-                        })
-                        .catch((err) => {
-                            console.error(`${err.name}: ${err.message}`);
-                        });
-                    }
-                </script>
-            </head>
-            <body style="background: black; display:flex; margin:0px;">
-            </body>
-            </html>
-            '''
+<html style="cursor: none;">
+    <head>
+        <script type="text/javascript">
+            if (!navigator.mediaDevices?.enumerateDevices) {
+                console.log("enumerateDevices() not supported.");
+            } else {
+                // List cameras and microphones.
+                navigator.mediaDevices.getUserMedia({ video: true });
+                navigator.mediaDevices
+                    .enumerateDevices()
+                    .then((devices) => {
+                        cameraOptions = document.getElementById('cameraOptions')
+                        let filteredDevices = devices.filter((device => device.kind === "videoinput"));
+
+                        filteredDevices.forEach((device) => {
+                            cameraOptions.options[cameraOptions.options.length] = new Option(device.label.split('(')[0], device.label);
+                    });
+                })
+                .catch((err) => {
+                    console.error(`${err.name}: ${err.message}`);
+                });
+            }
+        </script>
+    </head>
+
+    <body style="background: black; display:flex; margin:0px;">
+        <div class="elementContainer">
+            <div class="myDiv">
+                <video id="myVidPlayer" controls muted autoplay></video>
+            </div>
+            <div class="myDiv">
+                <select name = "options" id="cameraOptions"></select>
+            </div>
+        </div>
+    </body>
+</html>
+'''
         )
 
 if __name__ == '__main__':
